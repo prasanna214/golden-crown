@@ -22,6 +22,11 @@ public class Kingdom {
                 Objects.equals(getEmblem(), kingdom.getEmblem());
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getEmblem());
+    }
+
     public String getName() {
         return name;
     }

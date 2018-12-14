@@ -57,4 +57,32 @@ class KingdomTest {
 
         assertNotEquals(kingdom, otherKingdom);
     }
+
+    @Test
+    void twoKingdomsWithSameNameAndSameEmblemShouldHaveSameHash() {
+        Kingdom otherKingdom = new Kingdom("name", "emblem");
+
+        assertEquals(kingdom.hashCode(), otherKingdom.hashCode());
+    }
+
+    @Test
+    void twoKingdomsWithSameNameAndDifferentEmblemsShouldNotHaveSameHash() {
+        Kingdom otherKingdom = new Kingdom("name", "emblem1");
+
+        assertNotEquals(kingdom.hashCode(), otherKingdom.hashCode());
+    }
+
+    @Test
+    void twoKingdomsWithDifferentNamesAndSameEmblemShouldNotHaveSameHash() {
+        Kingdom otherKingdom = new Kingdom("name1", "emblem");
+
+        assertNotEquals(kingdom.hashCode(), otherKingdom.hashCode());
+    }
+
+    @Test
+    void twoKingdomsWithDifferentNamesAndDifferentEmblemsShouldNotHaveSameHash() {
+        Kingdom otherKingdom = new Kingdom("name1", "emblem1");
+
+        assertNotEquals(kingdom.hashCode(), otherKingdom.hashCode());
+    }
 }
