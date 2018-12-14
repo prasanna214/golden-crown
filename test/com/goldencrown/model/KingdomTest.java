@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class KingdomTest {
 
@@ -84,5 +85,44 @@ class KingdomTest {
         Kingdom otherKingdom = new Kingdom("name1", "emblem1");
 
         assertNotEquals(kingdom.hashCode(), otherKingdom.hashCode());
+    }
+
+    @Test
+    void aNullObjectCanNeverBecomeAnAlly() {
+        Kingdom nullKingdom = null;
+
+        kingdom.joinAllies(nullKingdom);
+
+        assertNotEquals(1, kingdom.getAllies().size());
+    }
+
+    @Test
+    void otherKingdomCanChooseToBecomeAnAlly() {
+        Kingdom otherKingdom = new Kingdom("name1", "emblem1");
+
+        kingdom.joinAllies(otherKingdom);
+
+        assertTrue(kingdom.getAllies().contains(otherKingdom));
+    }
+
+    @Test
+    void noDuplicatesAlliesShouldBeAdded() {
+        Kingdom otherKingdom = new Kingdom("name1", "emblem1");
+
+        kingdom.joinAllies(otherKingdom);
+        kingdom.joinAllies(otherKingdom);
+
+        assertNotEquals(2, kingdom.getAllies().size());
+    }
+
+    @Test
+    void kingdomsWithSameNameAndEmblemShouldBeTreatedAsSingleAlly() {
+        Kingdom kingdom1 = new Kingdom("name1", "emblem1");
+        Kingdom kingdom2 = new Kingdom("name1", "emblem1");
+
+        kingdom.joinAllies(kingdom1);
+        kingdom.joinAllies(kingdom2);
+
+        assertNotEquals(2, kingdom.getAllies().size());
     }
 }
