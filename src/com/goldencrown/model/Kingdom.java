@@ -13,6 +13,15 @@ public class Kingdom {
         this.emblem = emblem;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Kingdom)) return false;
+        Kingdom kingdom = (Kingdom) o;
+        return Objects.equals(getName(), kingdom.getName()) &&
+                Objects.equals(getEmblem(), kingdom.getEmblem());
+    }
+
     public String getName() {
         return name;
     }
