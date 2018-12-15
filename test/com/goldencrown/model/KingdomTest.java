@@ -4,9 +4,13 @@ import com.goldencrown.controller.MessageValidationStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -170,5 +174,30 @@ class KingdomTest {
 
         verify(messageValidation, times(1)).isValid(message);
         verify(sender, times(0)).joinAllies(kingdom);
+    }
+
+    @Test
+    void doNothingWhenMessageListIsNull() {
+        try {
+            kingdom.sendMessages(null);
+        } catch (NullPointerException exception) {
+            fail("exception thrown");
+        }
+    }
+
+    @Test
+    void allReceiversOfMessagesShouldBeInvited() {
+        Kingdom receiver1 = mock(Kingdom.class);
+        Kingdom receiver2 = mock(Kingdom.class);
+        Message message1 = mock(Message.class);
+        Message message2 = mock(Message.class);
+        when(message1.getReceiver()).thenReturn(receiver1);
+        when(message2.getReceiver()).thenReturn(receiver2);
+        List<Message> messages = Arrays.asList(message1, message2);
+
+        kingdom.sendMessages(messages);
+
+        verify(receiver1).processAllyInvite(message1);
+        verify(receiver2).processAllyInvite(message2);
     }
 }

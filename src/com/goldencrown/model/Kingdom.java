@@ -3,9 +3,11 @@ package com.goldencrown.model;
 import com.goldencrown.controller.MessageValidationStrategy;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 //Represents a territory ruled by a king
@@ -34,6 +36,15 @@ public class Kingdom {
     @Override
     public int hashCode() {
         return Objects.hash(getName(), getEmblem());
+    }
+
+    public void sendMessages(List<Message> messages) {
+        if (isNull(messages)) {
+            return;
+        }
+        messages.forEach(message -> {
+            message.getReceiver().processAllyInvite(message);
+        });
     }
 
     public void processAllyInvite(Message message) {
