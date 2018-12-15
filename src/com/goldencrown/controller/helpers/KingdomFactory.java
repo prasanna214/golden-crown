@@ -1,5 +1,6 @@
 package com.goldencrown.controller.helpers;
 
+import com.goldencrown.model.King;
 import com.goldencrown.model.Kingdom;
 
 import java.util.HashMap;
@@ -20,6 +21,8 @@ public class KingdomFactory {
     private static final String DRAGON = "Dragon";
     private static final String GORILLA = "Gorilla";
 
+    private static final King KING_SHAN = new King("Shan");
+
     private static final Kingdom LAND_KINGDOM = new Kingdom(LAND, PANDA);
     private static final Kingdom WATER_KINGDOM = new Kingdom(WATER, OCTOPUS);
     private static final Kingdom ICE_KINGDOM = new Kingdom(ICE, MAMMOTH);
@@ -33,6 +36,7 @@ public class KingdomFactory {
             put(ICE.toLowerCase(), ICE_KINGDOM);
             put(AIR.toLowerCase(), AIR_KINGDOM);
             put(FIRE.toLowerCase(), FIRE_KINGDOM);
+            SPACE_KINGDOM.setRuler(KING_SHAN);
             put(SPACE.toLowerCase(), SPACE_KINGDOM);
         }
     };

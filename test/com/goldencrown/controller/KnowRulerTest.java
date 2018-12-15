@@ -1,6 +1,7 @@
 package com.goldencrown.controller;
 
 import com.goldencrown.controller.actions.KnowRuler;
+import com.goldencrown.model.King;
 import com.goldencrown.model.Kingdom;
 import com.goldencrown.model.Universe;
 import com.goldencrown.view.IO;
@@ -81,6 +82,31 @@ class KnowRulerTest {
         knowRuler.execute(universe, consoleIO);
 
         verify(consoleIO).display("Ruler Name : kingdom");
+        verify(consoleIO).display("Allies of Ruler : ally1, ally2");
+    }
+
+    @Test
+    void displayKingNameAlongWithKingdomNameWhenKingdomHasRuler() {
+        Universe universe = mock(Universe.class);
+        Kingdom rulerKingdom = mock(Kingdom.class);
+        King ruler = mock(King.class);
+        when(rulerKingdom.getRuler()).thenReturn(ruler);
+        when(ruler.getName()).thenReturn("king name");
+        Kingdom ally1 = mock(Kingdom.class);
+        when(ally1.getName()).thenReturn("ally1");
+        Kingdom ally2 = mock(Kingdom.class);
+        when(ally2.getName()).thenReturn("ally2");
+        IO consoleIO = mock(IO.class);
+        when(universe.getRuler()).thenReturn(rulerKingdom);
+        when(rulerKingdom.getName()).thenReturn("kingdom");
+        when(rulerKingdom.getAllies()).thenReturn(new LinkedHashSet<Kingdom>() {{
+            add(ally1);
+            add(ally2);
+        }});
+
+        knowRuler.execute(universe, consoleIO);
+
+        verify(consoleIO).display("Ruler Name : kingdom / King: king name");
         verify(consoleIO).display("Allies of Ruler : ally1, ally2");
     }
 

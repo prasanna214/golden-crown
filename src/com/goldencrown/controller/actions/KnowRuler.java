@@ -7,12 +7,14 @@ import com.goldencrown.view.IO;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 public class KnowRuler implements Action {
 
     private static final String RULER_NAME = "Ruler Name : ";
     private static final String ALLIES_OF_RULER = "Allies of Ruler : ";
     private static final String NONE = "None";
+    private static final String KING = " / King: ";
 
     @Override
     public void execute(Universe universe, IO consoleIO) {
@@ -24,7 +26,15 @@ public class KnowRuler implements Action {
             displayRulerInfo(consoleIO, NONE, NONE);
             return;
         }
-        displayRulerInfo(consoleIO, ruler.getName(), getAlliesOfRuler(ruler));
+        displayRulerInfo(consoleIO, getRulerName(ruler), getAlliesOfRuler(ruler));
+    }
+
+    private String getRulerName(Kingdom rulerKingdom) {
+        String rulerName = rulerKingdom.getName();
+        if (nonNull(rulerKingdom.getRuler())) {
+            rulerName += KING + rulerKingdom.getRuler().getName();
+        }
+        return rulerName;
     }
 
     private void displayRulerInfo(IO consoleIO, String name, String allies) {
