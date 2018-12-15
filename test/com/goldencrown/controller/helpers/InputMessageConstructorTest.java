@@ -19,10 +19,11 @@ import static org.mockito.Mockito.when;
 
 class InputMessageConstructorTest {
 
-    private static final String INPUT_MESSAGE = "1. Input Messages to kingdoms from King Shan";
+    private static final String INPUT_MESSAGE = "Input Messages to kingdoms from King Shan\n";
     private static final String RECEIVER_NAME = "Enter receiver name : ";
     private static final String CONTENT = "Enter content : ";
-    private static final String STOP_MESSAGE = "Enter \'done\' to stop the input";
+    private static final String STOP_OR_CONTINUE = "Enter: \'done\' to stop\nEnter any key to continue";
+
 
     private IO consoleIO;
     private Kingdom sender;
@@ -43,7 +44,7 @@ class InputMessageConstructorTest {
         messageConstructor.constructMessages(sender, consoleIO);
 
         verify(consoleIO).display(INPUT_MESSAGE);
-        verify(consoleIO).display(STOP_MESSAGE);
+        verify(consoleIO).display(STOP_OR_CONTINUE);
     }
 
     @Test
