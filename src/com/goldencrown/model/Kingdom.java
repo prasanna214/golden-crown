@@ -36,6 +36,19 @@ public class Kingdom {
         return Objects.hash(getName(), getEmblem());
     }
 
+    public void processAllyInvite(Message message) {
+        if (nonNull(messageValidationStrategy) && messageValidationStrategy.isValid(message)) {
+            message.getSender().joinAllies(this);
+        }
+    }
+
+    public void joinAllies(Kingdom kingdom) {
+        if (Objects.isNull(kingdom)) {
+            return;
+        }
+        this.allies.add(kingdom);
+    }
+
     public String getName() {
         return name;
     }
@@ -54,19 +67,6 @@ public class Kingdom {
 
     public Set<Kingdom> getAllies() {
         return allies;
-    }
-
-    public void joinAllies(Kingdom kingdom) {
-        if (Objects.isNull(kingdom)) {
-            return;
-        }
-        this.allies.add(kingdom);
-    }
-
-    public void processAllyInvite(Message message) {
-        if (nonNull(messageValidationStrategy) && messageValidationStrategy.isValid(message)) {
-            message.getSender().joinAllies(this);
-        }
     }
 
     public void setMessageValidationStrategy(MessageValidationStrategy messageValidationStrategy) {
