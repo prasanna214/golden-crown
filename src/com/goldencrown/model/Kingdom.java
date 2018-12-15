@@ -1,8 +1,12 @@
 package com.goldencrown.model;
 
+import com.goldencrown.controller.MessageValidationStrategy;
+
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+
+import static java.util.Objects.nonNull;
 
 //Represents a territory ruled by a king
 public class Kingdom {
@@ -10,6 +14,7 @@ public class Kingdom {
     private String emblem;
     private King ruler;
     private Set<Kingdom> allies;
+    private MessageValidationStrategy messageValidationStrategy;
 
     public Kingdom(String name, String emblem) {
         this.name = name;
@@ -56,5 +61,15 @@ public class Kingdom {
             return;
         }
         this.allies.add(kingdom);
+    }
+
+    public void processAllyInvite(Message message) {
+        if (nonNull(messageValidationStrategy) && messageValidationStrategy.isValid(message)) {
+            message.getSender().joinAllies(this);
+        }
+    }
+
+    public void setMessageValidationStrategy(MessageValidationStrategy messageValidationStrategy) {
+        this.messageValidationStrategy = messageValidationStrategy;
     }
 }

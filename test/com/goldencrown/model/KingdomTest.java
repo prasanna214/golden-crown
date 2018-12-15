@@ -1,11 +1,16 @@
 package com.goldencrown.model;
 
+import com.goldencrown.controller.MessageValidationStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class KingdomTest {
 
@@ -124,5 +129,46 @@ class KingdomTest {
         kingdom.joinAllies(kingdom2);
 
         assertNotEquals(2, kingdom.getAllies().size());
+    }
+
+    @Test
+    void doNothingOnNullMessageValidationStrategy() {
+        Message message = mock(Message.class);
+        Kingdom sender = mock(Kingdom.class);
+        when(message.getSender()).thenReturn(sender);
+
+        kingdom.processAllyInvite(message);
+
+        verify(sender, times(0)).joinAllies(kingdom);
+    }
+
+    @Test
+    void becomeAllyOfValidInviteSender() {
+        Message message = mock(Message.class);
+        Kingdom sender = mock(Kingdom.class);
+        MessageValidationStrategy messageValidation = mock(MessageValidationStrategy.class);
+        when(message.getSender()).thenReturn(sender);
+        when(messageValidation.isValid(message)).thenReturn(true);
+        kingdom.setMessageValidationStrategy(messageValidation);
+
+        kingdom.processAllyInvite(message);
+
+        verify(messageValidation, times(1)).isValid(message);
+        verify(sender, times(1)).joinAllies(kingdom);
+    }
+
+    @Test
+    void doNothingOnInvalidAllyInvite() {
+        Message message = mock(Message.class);
+        Kingdom sender = mock(Kingdom.class);
+        when(message.getSender()).thenReturn(sender);
+        MessageValidationStrategy messageValidation = mock(MessageValidationStrategy.class);
+        when(messageValidation.isValid(message)).thenReturn(false);
+        kingdom.setMessageValidationStrategy(messageValidation);
+
+        kingdom.processAllyInvite(message);
+
+        verify(messageValidation, times(1)).isValid(message);
+        verify(sender, times(0)).joinAllies(kingdom);
     }
 }
