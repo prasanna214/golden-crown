@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 class TameOfThronesTest {
     private static final String WELCOME_MESSAGE = "Welcome to Tame Of Thrones";
     private static final String KNOW_THE_RULER_OPTION = "1. Know the ruler of Southeros";
-    private static final String QUIT_OPTION = "Type quit to exit";
+    private static final String QUIT_OPTION = "Enter quit to exit";
     private static final String OPTION_BELOW = "Enter your option below";
     private static final String AVAILABLE_OPTIONS_HEADER = "-------Available Options-------";
 

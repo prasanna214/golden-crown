@@ -2,6 +2,7 @@ package com.goldencrown.controller.helpers;
 
 import com.goldencrown.controller.actions.InvalidAction;
 import com.goldencrown.controller.actions.KnowRuler;
+import com.goldencrown.controller.actions.Mastery;
 import com.goldencrown.controller.actions.Quit;
 import org.junit.jupiter.api.Test;
 
@@ -13,6 +14,11 @@ class ActionFactoryTest {
     @Test
     void returnKnowTheRulerActionForInputOne() {
         assertTrue(actionMap.get("1") instanceof KnowRuler);
+    }
+
+    @Test
+    void returnMasteryActionForInputTwo() {
+        assertTrue(actionMap.get("2") instanceof Mastery);
     }
 
     @Test
