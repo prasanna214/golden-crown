@@ -2,7 +2,7 @@ package com.goldencrown.model;
 
 import com.goldencrown.controller.MessageValidationStrategy;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -21,7 +21,7 @@ public class Kingdom {
     public Kingdom(String name, String emblem) {
         this.name = name;
         this.emblem = emblem;
-        this.allies = new HashSet<>();
+        this.allies = new LinkedHashSet<>();
     }
 
     @Override
