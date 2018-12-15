@@ -5,7 +5,7 @@ import com.goldencrown.model.Kingdom;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Constants {
+public class KingdomFactory {
     private static final String LAND = "Land";
     private static final String WATER = "Water";
     private static final String ICE = "Ice";

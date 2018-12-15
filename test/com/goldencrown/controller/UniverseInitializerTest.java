@@ -1,6 +1,6 @@
 package com.goldencrown.controller;
 
-import com.goldencrown.controller.helpers.Constants;
+import com.goldencrown.controller.helpers.KingdomFactory;
 import com.goldencrown.controller.helpers.UniverseInitializer;
 import com.goldencrown.model.Universe;
 import org.junit.jupiter.api.Test;
@@ -13,6 +13,6 @@ class UniverseInitializerTest {
     void shouldInitializeUniverseWithKingdomsFromKingdomMap() {
         Universe universe = UniverseInitializer.initialize();
 
-        assertTrue(Constants.kingdomMap.values().containsAll(universe.getKingdoms()));
+        assertTrue(KingdomFactory.kingdomMap.values().containsAll(universe.getKingdoms()));
     }
 }

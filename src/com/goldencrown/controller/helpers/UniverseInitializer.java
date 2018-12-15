@@ -5,7 +5,7 @@ import com.goldencrown.model.Universe;
 
 import java.util.ArrayList;
 
-import static com.goldencrown.controller.helpers.Constants.kingdomMap;
+import static com.goldencrown.controller.helpers.KingdomFactory.kingdomMap;
 
 public class UniverseInitializer {
 
