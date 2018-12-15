@@ -54,7 +54,7 @@ public class Kingdom {
     }
 
     public void joinAllies(Kingdom kingdom) {
-        if (Objects.isNull(kingdom)) {
+        if (Objects.isNull(kingdom) || kingdom.equals(this)) {
             return;
         }
         this.allies.add(kingdom);

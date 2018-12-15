@@ -102,7 +102,14 @@ class KingdomTest {
 
         kingdom.joinAllies(nullKingdom);
 
-        assertNotEquals(1, kingdom.getAllies().size());
+        assertEquals(0, kingdom.getAllies().size());
+    }
+
+    @Test
+    void sameKingdomCanNeverBecomeAnAllyToItself() {
+        kingdom.joinAllies(kingdom);
+
+        assertEquals(0, kingdom.getAllies().size());
     }
 
     @Test
