@@ -14,6 +14,7 @@ import static com.goldencrown.controller.helpers.KingdomFactory.kingdomMap;
 public class Mastery implements Action {
 
     private static final int REQUIRED_NUMBER_OF_ALLIES = 3;
+    private static final String CURRENT_RULER = "Thanks, Current ruler is ";
     private Kingdom ruleSeeker;
     private MessageValidationStrategy masteryMessageValidation;
     private MessageConstructor messageConstructor;
@@ -27,6 +28,11 @@ public class Mastery implements Action {
 
     @Override
     public void execute(Universe universe, IO consoleIO) {
+        if(ruleSeeker.equals(universe.getRuler())){
+            consoleIO.display(CURRENT_RULER + ruleSeeker.getName());
+            return;
+        }
+
         setMessageValidationStrategy(masteryMessageValidation);
         List<Message> messages = messageConstructor.constructMessages(ruleSeeker, consoleIO);
         ruleSeeker.sendMessages(messages);

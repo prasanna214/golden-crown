@@ -23,13 +23,15 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class MasteryTest {
-    private Mastery mastery;
+    private static final String CURRENT_RULER = "Thanks, Current ruler is ";
 
     private MessageValidationStrategy masteryMessageValidation;
     private MessageConstructor messageConstructor;
     private Kingdom ruleSeeker;
     private IO consoleIO;
     private Universe universe;
+
+    private Mastery mastery;
 
     @BeforeEach
     void setUp() {
@@ -39,6 +41,16 @@ class MasteryTest {
         universe = mock(Universe.class);
         consoleIO = mock(IO.class);
         mastery = new Mastery(ruleSeeker, masteryMessageValidation, messageConstructor);
+    }
+
+    @Test
+    void displayCurrentRulerIfRuleSeekerIsAlreadyTheRuler() {
+        when(universe.getRuler()).thenReturn(ruleSeeker);
+
+        mastery.execute(universe, consoleIO);
+
+        verify(consoleIO).display(CURRENT_RULER + ruleSeeker.getName());
+        verify(messageConstructor, times(0)).constructMessages(ruleSeeker, consoleIO);
     }
 
     @Test
