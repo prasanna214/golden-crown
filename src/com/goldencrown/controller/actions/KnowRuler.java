@@ -1,4 +1,4 @@
-package com.goldencrown.controller;
+package com.goldencrown.controller.actions;
 
 import com.goldencrown.model.Kingdom;
 import com.goldencrown.model.Universe;

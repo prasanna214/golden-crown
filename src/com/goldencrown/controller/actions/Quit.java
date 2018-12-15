@@ -1,4 +1,4 @@
-package com.goldencrown.controller;
+package com.goldencrown.controller.actions;
 
 import com.goldencrown.model.Universe;
 import com.goldencrown.view.IO;

@@ -1,5 +1,6 @@
 package com.goldencrown.controller;
 
+import com.goldencrown.controller.actions.KnowRuler;
 import com.goldencrown.model.Kingdom;
 import com.goldencrown.model.Universe;
 import com.goldencrown.view.IO;

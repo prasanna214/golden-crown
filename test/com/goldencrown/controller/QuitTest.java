@@ -1,5 +1,6 @@
 package com.goldencrown.controller;
 
+import com.goldencrown.controller.actions.Quit;
 import com.goldencrown.model.Universe;
 import com.goldencrown.view.IO;
 import org.junit.jupiter.api.Test;
