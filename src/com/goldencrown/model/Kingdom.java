@@ -80,6 +80,10 @@ public class Kingdom {
         return allies;
     }
 
+    public MessageValidationStrategy getMessageValidationStrategy(){
+        return messageValidationStrategy;
+    }
+
     public void setMessageValidationStrategy(MessageValidationStrategy messageValidationStrategy) {
         this.messageValidationStrategy = messageValidationStrategy;
     }
