@@ -7,7 +7,7 @@ import com.goldencrown.view.IO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
@@ -73,7 +73,7 @@ class KnowRulerTest {
         IO consoleIO = mock(IO.class);
         when(universe.getRuler()).thenReturn(ruler);
         when(ruler.getName()).thenReturn("kingdom");
-        when(ruler.getAllies()).thenReturn(new HashSet<Kingdom>() {{
+        when(ruler.getAllies()).thenReturn(new LinkedHashSet<Kingdom>() {{
             add(ally1);
             add(ally2);
         }});
