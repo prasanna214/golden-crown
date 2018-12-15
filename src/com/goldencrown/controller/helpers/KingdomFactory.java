@@ -28,12 +28,12 @@ public class KingdomFactory {
     private static final Kingdom SPACE_KINGDOM = new Kingdom(SPACE, GORILLA);
 
     public static Map<String, Kingdom> kingdomMap = new HashMap<String, Kingdom>() {{
-            put(LAND, LAND_KINGDOM);
-            put(WATER, WATER_KINGDOM);
-            put(ICE, ICE_KINGDOM);
-            put(AIR, AIR_KINGDOM);
-            put(FIRE, FIRE_KINGDOM);
-            put(SPACE, SPACE_KINGDOM);
+            put(LAND.toLowerCase(), LAND_KINGDOM);
+            put(WATER.toLowerCase(), WATER_KINGDOM);
+            put(ICE.toLowerCase(), ICE_KINGDOM);
+            put(AIR.toLowerCase(), AIR_KINGDOM);
+            put(FIRE.toLowerCase(), FIRE_KINGDOM);
+            put(SPACE.toLowerCase(), SPACE_KINGDOM);
         }
     };
 }

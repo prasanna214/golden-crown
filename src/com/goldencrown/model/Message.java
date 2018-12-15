@@ -4,6 +4,12 @@ public class Message {
     private Kingdom sender, receiver;
     private String content;
 
+    public Message(Kingdom sender, Kingdom receiver, String content) {
+        this.sender = sender;
+        this.receiver = receiver;
+        this.content = content;
+    }
+
     public Kingdom getSender() {
         return sender;
     }
