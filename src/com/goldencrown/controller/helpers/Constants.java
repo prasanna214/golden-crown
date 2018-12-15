@@ -1,4 +1,4 @@
-package com.goldencrown.controller;
+package com.goldencrown.controller.helpers;
 
 import com.goldencrown.model.Kingdom;
 

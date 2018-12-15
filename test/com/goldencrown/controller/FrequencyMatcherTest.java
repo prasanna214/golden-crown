@@ -2,7 +2,7 @@ package com.goldencrown.controller;
 
 import org.junit.jupiter.api.Test;
 
-import static com.goldencrown.controller.FrequencyMatcher.charFrequencyMatch;
+import static com.goldencrown.controller.helpers.FrequencyMatcher.charFrequencyMatch;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

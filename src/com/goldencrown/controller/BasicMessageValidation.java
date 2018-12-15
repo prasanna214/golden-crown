@@ -2,7 +2,7 @@ package com.goldencrown.controller;
 
 import com.goldencrown.model.Message;
 
-import static com.goldencrown.controller.FrequencyMatcher.charFrequencyMatch;
+import static com.goldencrown.controller.helpers.FrequencyMatcher.charFrequencyMatch;
 import static java.util.Objects.isNull;
 
 public class BasicMessageValidation implements MessageValidationStrategy {

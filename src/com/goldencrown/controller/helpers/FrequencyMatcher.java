@@ -1,4 +1,4 @@
-package com.goldencrown.controller;
+package com.goldencrown.controller.helpers;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +8,7 @@ import static java.util.Objects.isNull;
 
 public class FrequencyMatcher {
 
-    static boolean charFrequencyMatch(String pattern, String text) {
+    public static boolean charFrequencyMatch(String pattern, String text) {
         if (Objects.equals(pattern, text)) {
             return true;
         }

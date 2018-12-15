@@ -1,11 +1,11 @@
-package com.goldencrown.controller;
+package com.goldencrown.controller.helpers;
 
 import com.goldencrown.model.Kingdom;
 import com.goldencrown.model.Universe;
 
 import java.util.ArrayList;
 
-import static com.goldencrown.controller.Constants.kingdomMap;
+import static com.goldencrown.controller.helpers.Constants.kingdomMap;
 
 public class UniverseInitializer {
 
