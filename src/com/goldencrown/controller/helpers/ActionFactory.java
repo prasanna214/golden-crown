@@ -1,8 +1,13 @@
 package com.goldencrown.controller.helpers;
 
+import com.goldencrown.controller.BalletMessageConstructor;
+import com.goldencrown.controller.BalletMessageValidation;
 import com.goldencrown.controller.BasicMessageValidation;
+import com.goldencrown.controller.CountingStation;
+import com.goldencrown.controller.ElectionCoordinator;
 import com.goldencrown.controller.InputMessageConstructor;
 import com.goldencrown.controller.actions.Action;
+import com.goldencrown.controller.actions.Election;
 import com.goldencrown.controller.actions.InvalidAction;
 import com.goldencrown.controller.actions.KnowRuler;
 import com.goldencrown.controller.actions.Mastery;
@@ -12,11 +17,13 @@ import com.goldencrown.view.ConsoleIO;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class ActionFactory {
 
     private static final String KNOW_RULER = "1";
     private static final String MASTERY = "2";
+    private static final String ELECTION = "3";
     private static final String QUIT = "quit";
 
     private static final String SPACE = "space";
@@ -26,6 +33,16 @@ public class ActionFactory {
     private static final InputMessageConstructor INPUT_MESSAGE_CONSTRUCTOR = new InputMessageConstructor(CONSOLE_IO);
     private static final Mastery MASTERY_ACTION = new Mastery(RULE_SEEKER,
             MASTERY_MESSAGE_VALIDATION, INPUT_MESSAGE_CONSTRUCTOR);
+
+    private static final ElectionCoordinator COORDINATOR = new ElectionCoordinator();
+    private static final Random RANDOM = new Random();
+    private static final MessageContentGenerator CONTENT_GENERATOR = new MessageContentGenerator(RANDOM);
+    private static final BalletMessageConstructor MESSAGE_CONSTRUCTOR = new BalletMessageConstructor(CONTENT_GENERATOR);
+    private static final BalletMessageValidation MESSAGE_VALIDATION = new BalletMessageValidation();
+    private static final CountingStation COUNTING_STATION = new CountingStation();
+    private static final Election ELECTION_ACTION = new Election(COORDINATOR,
+            MESSAGE_CONSTRUCTOR,
+            MESSAGE_VALIDATION, COUNTING_STATION);
 
     private static final KnowRuler KNOW_RULER_ACTION = new KnowRuler();
     private static final Quit QUIT_ACTION = new Quit();
@@ -44,6 +61,7 @@ public class ActionFactory {
     static {
         actionMap.put(KNOW_RULER, KNOW_RULER_ACTION);
         actionMap.put(MASTERY, MASTERY_ACTION);
+        actionMap.put(ELECTION, ELECTION_ACTION);
         actionMap.put(QUIT, QUIT_ACTION);
     }
 }

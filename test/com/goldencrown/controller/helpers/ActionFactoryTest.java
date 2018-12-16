@@ -1,5 +1,6 @@
 package com.goldencrown.controller.helpers;
 
+import com.goldencrown.controller.actions.Election;
 import com.goldencrown.controller.actions.InvalidAction;
 import com.goldencrown.controller.actions.KnowRuler;
 import com.goldencrown.controller.actions.Mastery;
@@ -19,6 +20,11 @@ class ActionFactoryTest {
     @Test
     void returnMasteryActionForInputTwo() {
         assertTrue(actionMap.get("2") instanceof Mastery);
+    }
+
+    @Test
+    void returnElectionActionForInputTwo() {
+        assertTrue(actionMap.get("3") instanceof Election);
     }
 
     @Test

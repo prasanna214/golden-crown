@@ -12,8 +12,9 @@ public class TameOfThrones {
     private static final String WELCOME_MESSAGE = "Welcome to Tame Of Thrones";
     private static final String KNOW_THE_RULER_OPTION = "1. Know the ruler of Southeros";
     private static final String MASTERY_OPTION = "2. Help King Shan to become the ruler";
+    private static final String ELECTION_OPTION = "3. Help High Priest to find the ruler";
     private static final String QUIT_OPTION = "Enter quit to exit";
-    private static final String[] AVAILABLE_OPTIONS = {KNOW_THE_RULER_OPTION, MASTERY_OPTION, QUIT_OPTION};
+    private static final String[] AVAILABLE_OPTIONS = {KNOW_THE_RULER_OPTION, MASTERY_OPTION, ELECTION_OPTION, QUIT_OPTION};
     private static final String AVAILABLE_OPTIONS_HEADER = "-------Available Options-------";
     private static final String OPTION_BELOW = "Enter your option below";
 
