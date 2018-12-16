@@ -1,6 +1,5 @@
 package com.goldencrown.controller;
 
-import com.goldencrown.controller.actions.CountingStation;
 import com.goldencrown.model.Kingdom;
 import com.goldencrown.view.IO;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +14,7 @@ import java.util.Set;
 
 import static java.lang.String.format;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -100,6 +100,50 @@ class CountingStationTest {
         Kingdom kingdom1 = mock(Kingdom.class);
         Kingdom kingdom2 = mock(Kingdom.class);
         Kingdom kingdom3 = mock(Kingdom.class);
+        setUpCandidateData(kingdom1, kingdom2, kingdom3);
+
+        countingStation.setCandidates(Arrays.asList(kingdom1, kingdom2, kingdom3));
+        List<Kingdom> qualifiedCandidates = countingStation.getQualifiedCandidates();
+
+        assertEquals(2, qualifiedCandidates.size());
+        assertTrue(qualifiedCandidates.containsAll(Arrays.asList(kingdom2, kingdom3)));
+    }
+
+    @Test
+    void nextRoundNotRequiredWhenCandidateListIsNull() {
+        assertFalse(countingStation.isNextRoundNeeded());
+    }
+
+    @Test
+    void nextRoundNotRequiredWhenCandidateListIsEmpty() {
+        countingStation.setCandidates(new ArrayList<>());
+
+        assertFalse(countingStation.isNextRoundNeeded());
+    }
+
+    @Test
+    void nextRoundRequiredWhenQualifiedCandidatesAreMoreThanOne() {
+        Kingdom kingdom1 = mock(Kingdom.class);
+        Kingdom kingdom2 = mock(Kingdom.class);
+        Kingdom kingdom3 = mock(Kingdom.class);
+        setUpCandidateData(kingdom1, kingdom2, kingdom3);
+        countingStation.setCandidates(Arrays.asList(kingdom1, kingdom2, kingdom3));
+
+        assertTrue(countingStation.isNextRoundNeeded());
+    }
+
+    @Test
+    void nextRoundNotRequiredWhenQualifiedCandidatesAreNotMoreThanOne() {
+        Kingdom kingdom = mock(Kingdom.class);
+        Set allies = mock(LinkedHashSet.class);
+        when(allies.size()).thenReturn(2);
+        when(kingdom.getAllies()).thenReturn(allies);
+        countingStation.setCandidates(Collections.singletonList(kingdom));
+
+        assertFalse(countingStation.isNextRoundNeeded());
+    }
+
+    private void setUpCandidateData(Kingdom kingdom1, Kingdom kingdom2, Kingdom kingdom3) {
         Set allies1 = mock(LinkedHashSet.class);
         Set allies2 = mock(LinkedHashSet.class);
         Set allies3 = mock(LinkedHashSet.class);
@@ -109,11 +153,5 @@ class CountingStationTest {
         when(kingdom1.getAllies()).thenReturn(allies1);
         when(kingdom2.getAllies()).thenReturn(allies2);
         when(kingdom3.getAllies()).thenReturn(allies3);
-
-        countingStation.setCandidates(Arrays.asList(kingdom1, kingdom2, kingdom3));
-        List<Kingdom> qualifiedCandidates = countingStation.getQualifiedCandidates();
-
-        assertEquals(2, qualifiedCandidates.size());
-        assertTrue(qualifiedCandidates.containsAll(Arrays.asList(kingdom2, kingdom3)));
     }
 }

@@ -1,4 +1,4 @@
-package com.goldencrown.controller.actions;
+package com.goldencrown.controller;
 
 import com.goldencrown.model.Kingdom;
 import com.goldencrown.view.IO;
@@ -15,6 +15,7 @@ public class CountingStation {
 
     private static final String ROUND = "\n Results After Ballet Round : ";
     private static final String ALLIE_COUNT = "Allies for %s : %s";
+    private static final int ONE = 1;
 
     private List<Kingdom> candidates;
 
@@ -50,5 +51,13 @@ public class CountingStation {
 
     public void setCandidates(List<Kingdom> candidates) {
         this.candidates = candidates;
+    }
+
+    public boolean isNextRoundNeeded() {
+        if (isNull(candidates) || candidates.isEmpty()) {
+            return false;
+        }
+
+        return getQualifiedCandidates().size() > ONE;
     }
 }
