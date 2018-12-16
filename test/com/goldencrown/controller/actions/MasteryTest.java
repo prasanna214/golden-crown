@@ -50,7 +50,7 @@ class MasteryTest {
         mastery.execute(universe, consoleIO);
 
         verify(consoleIO).display(CURRENT_RULER + ruleSeeker.getName());
-        verify(messageConstructor, times(0)).constructMessages(ruleSeeker, consoleIO);
+        verify(messageConstructor, times(0)).constructMessages(ruleSeeker);
     }
 
     @Test
@@ -64,7 +64,7 @@ class MasteryTest {
     @Test
     void ruleSeekerSendsMessagesReceivedFromMessageConstructor() {
         ArrayList<Message> messages = new ArrayList<>();
-        when(messageConstructor.constructMessages(ruleSeeker, consoleIO)).thenReturn(messages);
+        when(messageConstructor.constructMessages(ruleSeeker)).thenReturn(messages);
 
         mastery.execute(universe, consoleIO);
 

@@ -8,6 +8,7 @@ import com.goldencrown.controller.actions.KnowRuler;
 import com.goldencrown.controller.actions.Mastery;
 import com.goldencrown.controller.actions.Quit;
 import com.goldencrown.model.Kingdom;
+import com.goldencrown.view.ConsoleIO;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +22,8 @@ public class ActionFactory {
     private static final String SPACE = "space";
     private static final Kingdom RULE_SEEKER = KingdomFactory.kingdomMap.get(SPACE);
     private static final BasicMessageValidation MASTERY_MESSAGE_VALIDATION = new BasicMessageValidation();
-    private static final InputMessageConstructor INPUT_MESSAGE_CONSTRUCTOR = new InputMessageConstructor();
+    private static final ConsoleIO CONSOLE_IO = new ConsoleIO(System.out, System.in);
+    private static final InputMessageConstructor INPUT_MESSAGE_CONSTRUCTOR = new InputMessageConstructor(CONSOLE_IO);
     private static final Mastery MASTERY_ACTION = new Mastery(RULE_SEEKER,
             MASTERY_MESSAGE_VALIDATION, INPUT_MESSAGE_CONSTRUCTOR);
 

@@ -7,5 +7,5 @@ import com.goldencrown.view.IO;
 import java.util.List;
 
 public interface MessageConstructor {
-    List<Message> constructMessages(Kingdom sender, IO io);
+    List<Message> constructMessages(Kingdom sender);
 }

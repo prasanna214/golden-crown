@@ -33,7 +33,7 @@ class InputMessageConstructorTest {
     void setUp() {
         consoleIO = mock(IO.class);
         sender = mock(Kingdom.class);
-        messageConstructor = new InputMessageConstructor();
+        messageConstructor = new InputMessageConstructor(consoleIO);
 
         when(consoleIO.getInput()).thenReturn("ICE").
                 thenReturn("msg").thenReturn("done");
@@ -41,7 +41,7 @@ class InputMessageConstructorTest {
 
     @Test
     void displayInputMessageAndStopMessage() {
-        messageConstructor.constructMessages(sender, consoleIO);
+        messageConstructor.constructMessages(sender);
 
         verify(consoleIO).display(INPUT_MESSAGE);
         verify(consoleIO).display(STOP_OR_CONTINUE);
@@ -49,7 +49,7 @@ class InputMessageConstructorTest {
 
     @Test
     void displayRecipientAndContentInputMessage() {
-        messageConstructor.constructMessages(sender, consoleIO);
+        messageConstructor.constructMessages(sender);
 
         verify(consoleIO).display(RECEIVER_NAME);
         verify(consoleIO).display(CONTENT);
@@ -61,7 +61,7 @@ class InputMessageConstructorTest {
                 .thenReturn("1").thenReturn("kingdom").
                 thenReturn("done").thenReturn("kingdom1");
 
-        messageConstructor.constructMessages(sender, consoleIO);
+        messageConstructor.constructMessages(sender);
 
         verify(consoleIO, times(5)).getInput();
     }
@@ -72,7 +72,7 @@ class InputMessageConstructorTest {
                 .thenReturn("invalid1").thenReturn("1").
                 thenReturn("invalid2").thenReturn("done");
 
-        List<Message> messages = messageConstructor.constructMessages(sender, consoleIO);
+        List<Message> messages = messageConstructor.constructMessages(sender);
 
         verify(consoleIO, times(6)).getInput();
         assertNotNull(messages);
@@ -85,7 +85,7 @@ class InputMessageConstructorTest {
                 .thenReturn("1").thenReturn("kingdom").
                 thenReturn("done").thenReturn("kingdom1");
 
-        List<Message> messages = messageConstructor.constructMessages(sender, consoleIO);
+        List<Message> messages = messageConstructor.constructMessages(sender);
 
         assertNotNull(messages);
         assertEquals(1, messages.size());

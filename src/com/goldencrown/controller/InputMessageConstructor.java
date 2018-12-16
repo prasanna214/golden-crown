@@ -17,13 +17,19 @@ public class InputMessageConstructor implements MessageConstructor{
     private static final String DONE = "done";
     private List<Message> messages = new ArrayList<>();
 
-    public List<Message> constructMessages(Kingdom sender, IO consoleIO) {
+    private IO io;
+
+    public InputMessageConstructor(IO io){
+        this.io = io;
+    }
+
+    public List<Message> constructMessages(Kingdom sender) {
         String option;
-        consoleIO.display(INPUT_MESSAGE);
+        io.display(INPUT_MESSAGE);
         do {
-            addMessageFromInput(consoleIO, sender);
-            consoleIO.display(STOP_OR_CONTINUE);
-            option = consoleIO.getInput().toLowerCase();
+            addMessageFromInput(io, sender);
+            io.display(STOP_OR_CONTINUE);
+            option = io.getInput().toLowerCase();
         }while (!option.equals(DONE));
         return messages;
     }

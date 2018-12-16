@@ -34,7 +34,7 @@ public class Mastery implements Action {
         }
 
         setMessageValidationStrategy(masteryMessageValidation);
-        List<Message> messages = messageConstructor.constructMessages(ruleSeeker, consoleIO);
+        List<Message> messages = messageConstructor.constructMessages(ruleSeeker);
         ruleSeeker.sendMessages(messages);
         setRuler(universe);
     }
