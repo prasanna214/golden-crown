@@ -1,0 +1,78 @@
+package com.goldencrown.controller;
+
+import com.goldencrown.model.Kingdom;
+import com.goldencrown.model.Message;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+
+import static java.util.Collections.singletonList;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+class BalletMessageValidationTest {
+
+    private BalletMessageValidation balletMessageValidation;
+
+    @BeforeEach
+    void setUp() {
+        balletMessageValidation = new BalletMessageValidation();
+    }
+
+    @Test
+    void balletMessageValidationWithNullElectionNomineesListIsInvalid() {
+        assertFalse(balletMessageValidation.isValid(mock(Message.class)));
+    }
+
+    @Test
+    void balletMessageValidationWithEmptyElectionNomineesListIsInvalid() {
+        balletMessageValidation.setElectionNominees(new ArrayList<>());
+
+        assertFalse(balletMessageValidation.isValid(mock(Message.class)));
+    }
+
+    @Test
+    void aMessageWithElectionNomineeReceiverAndValidContentIsInvalid() {
+        Kingdom sender = mock(Kingdom.class);
+        Kingdom receiver = mock(Kingdom.class);
+        balletMessageValidation.setElectionNominees(singletonList(receiver));
+        when(receiver.getEmblem()).thenReturn("dragon");
+        Message validMessage = mock(Message.class);
+        when(validMessage.getReceiver()).thenReturn(receiver);
+        when(validMessage.getSender()).thenReturn(sender);
+        when(validMessage.getContent()).thenReturn("dralkjgon");
+
+        assertFalse(balletMessageValidation.isValid(validMessage));
+    }
+
+    @Test
+    void aMessageWithNonElectionNomineeReceiverAndValidContentIsValid() {
+        Kingdom sender = mock(Kingdom.class);
+        Kingdom receiver = mock(Kingdom.class);
+        balletMessageValidation.setElectionNominees(singletonList(sender));
+        when(receiver.getEmblem()).thenReturn("dragon");
+        Message validMessage = mock(Message.class);
+        when(validMessage.getReceiver()).thenReturn(receiver);
+        when(validMessage.getSender()).thenReturn(sender);
+        when(validMessage.getContent()).thenReturn("dralkjgon");
+
+        assertTrue(balletMessageValidation.isValid(validMessage));
+    }
+
+    @Test
+    void aMessageWithNonElectionNomineeReceiverAndInvalidContentIsInvalid() {
+        Kingdom sender = mock(Kingdom.class);
+        Kingdom receiver = mock(Kingdom.class);
+        balletMessageValidation.setElectionNominees(singletonList(sender));
+        when(receiver.getEmblem()).thenReturn("owl");
+        Message invalidMessage = mock(Message.class);
+        when(invalidMessage.getReceiver()).thenReturn(receiver);
+        when(invalidMessage.getSender()).thenReturn(sender);
+        when(invalidMessage.getContent()).thenReturn("something");
+
+        assertFalse(balletMessageValidation.isValid(invalidMessage));
+    }
+}
