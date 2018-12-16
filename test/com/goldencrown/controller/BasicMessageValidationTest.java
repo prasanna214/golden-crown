@@ -66,4 +66,17 @@ class BasicMessageValidationTest {
 
         assertTrue(basicMessageValidation.isValid(validMessage));
     }
+
+    @Test
+    void aMessageThatDoesNotContainEmblemOfReceiverInContentIsInvalid() {
+        Kingdom sender = mock(Kingdom.class);
+        Kingdom receiver = mock(Kingdom.class);
+        when(receiver.getEmblem()).thenReturn("owl");
+        Message invalidMessage = mock(Message.class);
+        when(invalidMessage.getReceiver()).thenReturn(receiver);
+        when(invalidMessage.getSender()).thenReturn(sender);
+        when(invalidMessage.getContent()).thenReturn("something");
+
+        assertFalse(basicMessageValidation.isValid(invalidMessage));
+    }
 }
