@@ -30,6 +30,7 @@ import static org.mockito.Mockito.when;
 class ElectionTest {
     private static final String INPUT_MESSAGE = "Enter the kingdoms competing to be the ruler (names separated space):";
     private static final String INVALID_CANDIDATE_MESSAGES = "Please enter valid candidate names";
+    private static final String NO_VOTERS = "No voters, No Election";
 
     private ElectionCoordinator electionCoordinator;
     private BalletMessageConstructor balletMessageConstructor;
@@ -71,13 +72,6 @@ class ElectionTest {
         } catch (NullPointerException exception) {
             fail("Exception thrown");
         }
-    }
-
-    @Test
-    void clearRulerOfTheUniverse() {
-        election.execute(universe, consoleIO);
-
-        verify(universe).setRuler(null);
     }
 
     @Test
@@ -157,6 +151,14 @@ class ElectionTest {
         assertTrue(ruler.getAllies().isEmpty());
     }
 
+    @Test
+    void clearRulerOfTheUniverse() {
+        when(consoleIO.getInput()).thenReturn("Air space");
+
+        election.execute(universe, consoleIO);
+
+        verify(universe).setRuler(null);
+    }
     @Test
     void clearExistingAlliesForCandidatesIfAny() {
         when(consoleIO.getInput()).thenReturn("Air water");
@@ -246,5 +248,14 @@ class ElectionTest {
         election.execute(universe, consoleIO);
 
         verify(universe).setRuler(ruler);
+    }
+
+    @Test
+    void displayNoVotersMessageWhenThereAreSixCandidates() {
+        when(consoleIO.getInput()).thenReturn("water land ice fire space air");
+
+        election.execute(universe, consoleIO);
+
+        verify(consoleIO).display(NO_VOTERS);
     }
 }

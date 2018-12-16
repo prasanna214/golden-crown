@@ -22,6 +22,7 @@ public class Election implements Action {
     private static final String INVALID_CANDIDATE_MESSAGES = "Please enter valid candidate names";
     private static final int SIX = 6;
     private static final int ONE = 1;
+    private static final String NO_VOTERS = "No voters, No Election";
     private List<Kingdom> candidates;
 
     private ElectionCoordinator electionCoordinator;
@@ -44,21 +45,23 @@ public class Election implements Action {
             return;
         }
         electionSetUp(universe, io);
-
-        if (candidates.size() == 1) {
+        if (candidates.size() == ONE) {
             universe.setRuler(candidates.get(0));
+            return;
+        }
+        if (candidates.size() == SIX) {
+            io.display(NO_VOTERS);
             return;
         }
         startElection(universe, io);
     }
 
     private void electionSetUp(Universe universe, IO io) {
-        universe.setRuler(null);
         addCandidatesFromInput(io);
         balletMessageValidation.setElectionNominees(candidates);
         countingStation.setCandidates(candidates);
         setBalletMessageValidationStrategyForAllKingdoms();
-        round = 1;
+        round = ONE;
     }
 
     private void addCandidatesFromInput(IO io) {
@@ -89,6 +92,7 @@ public class Election implements Action {
     }
 
     private void startElection(Universe universe, IO io) {
+        universe.setRuler(null);
         candidates.forEach(candidate -> candidate.getAllies().clear());
         collectAndDistributeMessages();
         countingStation.displayResults(round++, io);
