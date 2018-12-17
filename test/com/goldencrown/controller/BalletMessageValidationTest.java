@@ -29,7 +29,7 @@ class BalletMessageValidationTest {
 
     @Test
     void balletMessageValidationWithEmptyElectionNomineesListIsInvalid() {
-        balletMessageValidation.setElectionNominees(new ArrayList<>());
+        balletMessageValidation.setCandidates(new ArrayList<>());
 
         assertFalse(balletMessageValidation.isValid(mock(Message.class)));
     }
@@ -38,7 +38,7 @@ class BalletMessageValidationTest {
     void aMessageWithElectionNomineeReceiverAndValidContentIsInvalid() {
         Kingdom sender = mock(Kingdom.class);
         Kingdom receiver = mock(Kingdom.class);
-        balletMessageValidation.setElectionNominees(singletonList(receiver));
+        balletMessageValidation.setCandidates(singletonList(receiver));
         when(receiver.getEmblem()).thenReturn("dragon");
         Message validMessage = mock(Message.class);
         when(validMessage.getReceiver()).thenReturn(receiver);
@@ -52,7 +52,7 @@ class BalletMessageValidationTest {
     void aMessageWithNonElectionNomineeReceiverAndValidContentIsValid() {
         Kingdom sender = mock(Kingdom.class);
         Kingdom receiver = mock(Kingdom.class);
-        balletMessageValidation.setElectionNominees(singletonList(sender));
+        balletMessageValidation.setCandidates(singletonList(sender));
         when(receiver.getEmblem()).thenReturn("dragon");
         Message validMessage = mock(Message.class);
         when(validMessage.getReceiver()).thenReturn(receiver);
@@ -66,7 +66,7 @@ class BalletMessageValidationTest {
     void aMessageWithNonElectionNomineeReceiverAndInvalidContentIsInvalid() {
         Kingdom sender = mock(Kingdom.class);
         Kingdom receiver = mock(Kingdom.class);
-        balletMessageValidation.setElectionNominees(singletonList(sender));
+        balletMessageValidation.setCandidates(singletonList(sender));
         when(receiver.getEmblem()).thenReturn("owl");
         Message invalidMessage = mock(Message.class);
         when(invalidMessage.getReceiver()).thenReturn(receiver);

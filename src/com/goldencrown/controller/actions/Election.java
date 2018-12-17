@@ -56,7 +56,7 @@ public class Election implements Action {
     private void electionSetUp(IO io) {
         registry.registerCandidates(io);
         this.candidates = getRegisteredCandidates(registry.getCandidateNames());
-        messageValidation.setElectionNominees(candidates);
+        messageValidation.setCandidates(candidates);
         setBalletMessageValidationStrategyForAllKingdoms();
         round = ONE;
     }

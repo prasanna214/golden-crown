@@ -8,19 +8,19 @@ import java.util.List;
 import static java.util.Objects.isNull;
 
 public class BalletMessageValidation extends BasicMessageValidation {
-    private List<Kingdom> electionNominees;
+    private List<Kingdom> candidates;
 
     @Override
     public boolean isValid(Message message) {
-        if (isNull(electionNominees) || electionNominees.isEmpty()) {
+        if (isNull(candidates) || candidates.isEmpty()) {
             return false;
         }
 
-        boolean isForElectionNominee = electionNominees.contains(message.getReceiver());
+        boolean isForElectionNominee = candidates.contains(message.getReceiver());
         return !isForElectionNominee && super.isValid(message);
     }
 
-    public void setElectionNominees(List<Kingdom> electionNominees) {
-        this.electionNominees = electionNominees;
+    public void setCandidates(List<Kingdom> candidates) {
+        this.candidates = candidates;
     }
 }

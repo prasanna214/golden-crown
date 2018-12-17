@@ -95,7 +95,7 @@ class ElectionTest {
         election.execute(universe, consoleIO);
         List<Kingdom> candidates = election.getCandidates();
 
-        verify(balletMessageValidation).setElectionNominees(candidates);
+        verify(balletMessageValidation).setCandidates(candidates);
     }
 
     @Test
