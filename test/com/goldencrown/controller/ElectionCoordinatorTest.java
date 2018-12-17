@@ -27,8 +27,7 @@ class ElectionCoordinatorTest {
     @BeforeEach
     void setUp() {
         balletBox = mock(BalletBox.class);
-        electionCoordinator = new ElectionCoordinator();
-        electionCoordinator.setBalletBox(balletBox);
+        electionCoordinator = new ElectionCoordinator(balletBox, 6);
     }
 
     @Test
@@ -125,11 +124,12 @@ class ElectionCoordinatorTest {
         when(message3.getReceiver()).thenReturn(nonNullReceiver);
         List<Message> ballet = Arrays.asList(message, message1, message2, message3);
         int requirement = 2;
+        when(balletBox.getMessages()).thenReturn(ballet);
         electionCoordinator.setNumberOfMessagesToBePicked(requirement);
 
         electionCoordinator.conductElection(setUpBasicCandidateData());
 
-        List<Message> messages = electionCoordinator.pickRandomMessages(ballet, requirement);
+        List<Message> messages = electionCoordinator.getRandomMessages();
         assertEquals(requirement, messages.size());
         assertTrue(ballet.containsAll(messages));
     }

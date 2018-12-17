@@ -37,7 +37,6 @@ public class ActionFactory {
             MASTERY_MESSAGE_VALIDATION, INPUT_MESSAGE_CONSTRUCTOR);
 
     private static final int MESSAGES_TO_BE_PICKED = 6;
-    private static final ElectionCoordinator COORDINATOR = new ElectionCoordinator();
     private static final Random RANDOM = new Random();
     private static final MessageContentGenerator CONTENT_GENERATOR = new MessageContentGenerator(RANDOM);
     private static final BalletMessageConstructor MESSAGE_CONSTRUCTOR = new BalletMessageConstructor(CONTENT_GENERATOR);
@@ -45,6 +44,7 @@ public class ActionFactory {
     private static final CountingStation COUNTING_STATION = new CountingStation();
     private static final CandidateRegistry REGISTRY = new CandidateRegistry();
     private static final BalletBox BALLET_BOX = new BalletBox(MESSAGE_CONSTRUCTOR);
+    private static final ElectionCoordinator COORDINATOR = new ElectionCoordinator(BALLET_BOX, MESSAGES_TO_BE_PICKED);
     private static final Election ELECTION_ACTION = new Election(COORDINATOR,
             REGISTRY, MESSAGE_VALIDATION, COUNTING_STATION);
 
@@ -65,8 +65,6 @@ public class ActionFactory {
     static {
         actionMap.put(KNOW_RULER, KNOW_RULER_ACTION);
         actionMap.put(MASTERY, MASTERY_ACTION);
-        COORDINATOR.setBalletBox(BALLET_BOX);
-        COORDINATOR.setNumberOfMessagesToBePicked(MESSAGES_TO_BE_PICKED);
         actionMap.put(ELECTION, ELECTION_ACTION);
         actionMap.put(QUIT, QUIT_ACTION);
     }

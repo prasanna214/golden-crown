@@ -14,38 +14,40 @@ public class ElectionCoordinator {
     private List<Message> randomMessages;
     private int numberOfMessagesToBePicked;
 
+    public ElectionCoordinator(BalletBox balletBox, int numberOfMessagesToBePicked) {
+        this.balletBox = balletBox;
+        this.numberOfMessagesToBePicked = numberOfMessagesToBePicked;
+    }
+
     public void conductElection(List<Kingdom> candidates) {
         if (isNull(candidates)) {
             return;
         }
         candidates.forEach(candidate -> candidate.getAllies().clear());
         balletBox.acceptMessages(candidates);
-        this.randomMessages = pickRandomMessages(balletBox.getMessages(), numberOfMessagesToBePicked);
-        distributeToReceivers(this.randomMessages);
+        pickRandomMessages();
+        distributeToReceivers();
     }
 
-    public List<Message> pickRandomMessages(List<Message> balletBox, int requirement) {
-        if (isNull(balletBox) || balletBox.isEmpty()) {
-            return balletBox;
-        }
-        if (requirement > balletBox.size()) {
-            return balletBox;
-        }
-        Collections.shuffle(balletBox);
-        return new ArrayList<>(balletBox.subList(0, requirement));
-    }
-
-    public void distributeToReceivers(List<Message> messages) {
-        if (isNull(messages)) {
+    private void pickRandomMessages() {
+        List<Message> messages = balletBox.getMessages();
+        if (isNull(messages) || messages.isEmpty() ||
+                numberOfMessagesToBePicked > messages.size()) {
+            this.randomMessages = messages;
             return;
         }
-        messages.forEach(message -> {
-            message.getReceiver().processAllyInvite(message);
-        });
+
+        Collections.shuffle(messages);
+        this.randomMessages = new ArrayList<>(messages.subList(0, numberOfMessagesToBePicked));
     }
 
-    public void setBalletBox(BalletBox balletBox) {
-        this.balletBox = balletBox;
+    private void distributeToReceivers() {
+        if (isNull(randomMessages)) {
+            return;
+        }
+        randomMessages.forEach(message -> {
+            message.getReceiver().processAllyInvite(message);
+        });
     }
 
     public List<Message> getRandomMessages() {
