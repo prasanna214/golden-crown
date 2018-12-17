@@ -76,7 +76,6 @@ class CandidateRegistryTest {
         verify(consoleIO).display(INVALID_CANDIDATE_MESSAGES);
     }
 
-
     @Test
     void recurseUntilValidInputIsGiven() {
         when(consoleIO.getInput()).thenReturn("invalid input").thenReturn("invalid again")
@@ -87,5 +86,6 @@ class CandidateRegistryTest {
         verify(consoleIO, times(3)).display(INPUT_MESSAGE);
         verify(consoleIO, times(3)).getInput();
         verify(consoleIO, times(2)).display(INVALID_CANDIDATE_MESSAGES);
+        assertTrue(Arrays.asList("ice", "air").containsAll(candidateRegistry.getCandidateNames()));
     }
 }

@@ -21,6 +21,7 @@ public class CandidateRegistry {
         if (isValidInput(candidateNames)) {
             io.display(INVALID_CANDIDATE_MESSAGES);
             registerCandidates(io);
+            return;
         }
         this.candidateNames = candidateNames;
     }
