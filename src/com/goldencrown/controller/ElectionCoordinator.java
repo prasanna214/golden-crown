@@ -14,7 +14,7 @@ public class ElectionCoordinator {
     private List<Message> randomMessages;
     private int numberOfMessagesToBePicked;
 
-    public void startElection(List<Kingdom> candidates) {
+    public void conductElection(List<Kingdom> candidates) {
         if (isNull(candidates)) {
             return;
         }

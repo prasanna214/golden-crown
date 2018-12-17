@@ -34,7 +34,7 @@ class ElectionCoordinatorTest {
     @Test
     void doNothingIfCandidatesListIsNull() {
         try {
-            electionCoordinator.startElection(null);
+            electionCoordinator.conductElection(null);
         } catch (NullPointerException exception) {
             fail("Exception thrown");
         }
@@ -49,7 +49,7 @@ class ElectionCoordinatorTest {
         when(candidate1.getAllies()).thenReturn(allies1);
         when(candidate2.getAllies()).thenReturn(allies2);
 
-        electionCoordinator.startElection(Arrays.asList(candidate1, candidate2));
+        electionCoordinator.conductElection(Arrays.asList(candidate1, candidate2));
 
         verify(allies1).clear();
         verify(allies2).clear();
@@ -59,7 +59,7 @@ class ElectionCoordinatorTest {
     void acceptMessagesIntoBalletBox() {
         List<Kingdom> candidates = setUpBasicCandidateData();
 
-        electionCoordinator.startElection(candidates);
+        electionCoordinator.conductElection(candidates);
 
         verify(balletBox).acceptMessages(candidates);
     }
@@ -68,7 +68,7 @@ class ElectionCoordinatorTest {
     void pickNothingIfBalletBoxIsNull() {
         when(balletBox.getMessages()).thenReturn(null);
 
-        electionCoordinator.startElection(setUpBasicCandidateData());
+        electionCoordinator.conductElection(setUpBasicCandidateData());
 
         assertNull(electionCoordinator.getRandomMessages());
     }
@@ -78,7 +78,7 @@ class ElectionCoordinatorTest {
         List<Message> emptyBallet = new ArrayList<>();
         when(balletBox.getMessages()).thenReturn(emptyBallet);
 
-        electionCoordinator.startElection(setUpBasicCandidateData());
+        electionCoordinator.conductElection(setUpBasicCandidateData());
         assertEquals(emptyBallet, electionCoordinator.getRandomMessages());
     }
 
@@ -99,12 +99,12 @@ class ElectionCoordinatorTest {
         int requirement = 4;
         electionCoordinator.setNumberOfMessagesToBePicked(requirement);
 
-        electionCoordinator.startElection(setUpBasicCandidateData());
+        electionCoordinator.conductElection(setUpBasicCandidateData());
         List<Message> firstRandomList = electionCoordinator.getRandomMessages();
         assertEquals(requirement, firstRandomList.size());
         assertTrue(sameBallet.containsAll(firstRandomList));
 
-        electionCoordinator.startElection(setUpBasicCandidateData());
+        electionCoordinator.conductElection(setUpBasicCandidateData());
         List<Message> secondRandomList = electionCoordinator.getRandomMessages();
         assertEquals(requirement, secondRandomList.size());
         assertTrue(sameBallet.containsAll(secondRandomList));
@@ -127,7 +127,7 @@ class ElectionCoordinatorTest {
         int requirement = 2;
         electionCoordinator.setNumberOfMessagesToBePicked(requirement);
 
-        electionCoordinator.startElection(setUpBasicCandidateData());
+        electionCoordinator.conductElection(setUpBasicCandidateData());
 
         List<Message> messages = electionCoordinator.pickRandomMessages(ballet, requirement);
         assertEquals(requirement, messages.size());
@@ -143,7 +143,7 @@ class ElectionCoordinatorTest {
         when(balletBox.getMessages()).thenReturn(ballet);
         electionCoordinator.setNumberOfMessagesToBePicked(2);
 
-        electionCoordinator.startElection(setUpBasicCandidateData());
+        electionCoordinator.conductElection(setUpBasicCandidateData());
 
         assertEquals(ballet, electionCoordinator.getRandomMessages());
     }
@@ -151,7 +151,7 @@ class ElectionCoordinatorTest {
     @Test
     void doNothingIfToBeDistributedMessageListIsNull() {
         try {
-            electionCoordinator.startElection(setUpBasicCandidateData());
+            electionCoordinator.conductElection(setUpBasicCandidateData());
         } catch (NullPointerException exception) {
             fail("Exception thrown");
         }
@@ -167,7 +167,7 @@ class ElectionCoordinatorTest {
         electionCoordinator.setNumberOfMessagesToBePicked(3);
         when(balletBox.getMessages()).thenReturn(messages);
 
-        electionCoordinator.startElection(setUpBasicCandidateData());
+        electionCoordinator.conductElection(setUpBasicCandidateData());
 
         verify(receiver1).processAllyInvite(message);
         verify(receiver2).processAllyInvite(message);
