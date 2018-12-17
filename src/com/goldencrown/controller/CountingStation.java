@@ -13,7 +13,7 @@ import static java.util.Objects.isNull;
 
 public class CountingStation {
 
-    private static final String ROUND = "\n Results After Ballet Round : ";
+    private static final String ROUND = "\nResults After Ballet Round : ";
     private static final String ALLIE_COUNT = "Allies for %s : %s";
     private static final int ONE = 1;
 

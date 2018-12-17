@@ -23,7 +23,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class CountingStationTest {
-    private static final String ROUND = "\n Results After Ballet Round : ";
+    private static final String ROUND = "\nResults After Ballet Round : ";
     private static final String ALLIE_COUNT = "Allies for %s : %s";
 
     private CountingStation countingStation;
