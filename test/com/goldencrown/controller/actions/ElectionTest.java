@@ -1,7 +1,7 @@
 package com.goldencrown.controller.actions;
 
-import com.goldencrown.controller.BalletMessageConstructor;
 import com.goldencrown.controller.BalletMessageValidation;
+import com.goldencrown.controller.CandidateRegistry;
 import com.goldencrown.controller.CountingStation;
 import com.goldencrown.controller.ElectionCoordinator;
 import com.goldencrown.model.Kingdom;
@@ -10,30 +10,27 @@ import com.goldencrown.view.IO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.goldencrown.controller.helpers.KingdomFactory.kingdomMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.Matchers.anyList;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class ElectionTest {
-    private static final String INPUT_MESSAGE = "Enter the kingdoms competing to be the ruler (names separated space):";
-    private static final String INVALID_CANDIDATE_MESSAGES = "Please enter valid candidate names";
     private static final String NO_VOTERS = "No voters, No Election";
 
     private ElectionCoordinator electionCoordinator;
-    private BalletMessageConstructor balletMessageConstructor;
+    private CandidateRegistry registry;
     private BalletMessageValidation balletMessageValidation;
     private CountingStation countingStation;
     private Universe universe;
@@ -44,16 +41,15 @@ class ElectionTest {
     @BeforeEach
     void setUp() {
         electionCoordinator = mock(ElectionCoordinator.class);
-        balletMessageConstructor = mock(BalletMessageConstructor.class);
+        registry = mock(CandidateRegistry.class);
         balletMessageValidation = mock(BalletMessageValidation.class);
         countingStation = mock(CountingStation.class);
         universe = mock(Universe.class);
         consoleIO = mock(IO.class);
-        when(consoleIO.getInput()).thenReturn("ice");
         when(countingStation.getQualifiedCandidates()).thenReturn(Collections.singletonList(mock(Kingdom.class)));
         when(countingStation.isNextRoundNeeded()).thenReturn(false);
 
-        election = new Election(electionCoordinator, balletMessageConstructor, balletMessageValidation, countingStation);
+        election = new Election(electionCoordinator, registry, balletMessageValidation, countingStation);
     }
 
     @Test
@@ -75,43 +71,15 @@ class ElectionTest {
     }
 
     @Test
-    void displayInputMessageOnIO() {
+    void registerCandidatesIntoCandidateRegistry() {
         election.execute(universe, consoleIO);
 
-        verify(consoleIO).display(INPUT_MESSAGE);
+        verify(registry).registerCandidates(consoleIO);
     }
 
     @Test
-    void getCandidateNamesFromInput() {
-        election.execute(universe, consoleIO);
-
-        verify(consoleIO).getInput();
-    }
-
-    @Test
-    void displayInvalidCandidateMessageGivenInvalidInput() {
-        when(consoleIO.getInput()).thenReturn("invalid candidate names").thenReturn("fire");
-
-        election.execute(universe, consoleIO);
-
-        verify(consoleIO).display(INVALID_CANDIDATE_MESSAGES);
-    }
-
-    @Test
-    void recurseUntilValidInputIsGiven() {
-        when(consoleIO.getInput()).thenReturn("invalid input").thenReturn("invalid again")
-                .thenReturn("ice air").thenReturn("invalid input");
-
-        election.execute(universe, consoleIO);
-
-        verify(consoleIO, times(3)).display(INPUT_MESSAGE);
-        verify(consoleIO, times(3)).getInput();
-        verify(consoleIO, times(2)).display(INVALID_CANDIDATE_MESSAGES);
-    }
-
-    @Test
-    void addCandidateKingdomsGivenValidKingdomNames() {
-        when(consoleIO.getInput()).thenReturn("Air Ice");
+    void addCandidateKingdomsGivenInRegistry() {
+        setUpCandidateNames();
 
         election.execute(universe, consoleIO);
 
@@ -123,11 +91,10 @@ class ElectionTest {
     }
 
     @Test
-    void setCandidatesForCountingStationAndMessageValidationStrategy() {
+    void setCandidatesForMessageValidationStrategy() {
         election.execute(universe, consoleIO);
         List<Kingdom> candidates = election.getCandidates();
 
-        verify(countingStation).setCandidates(candidates);
         verify(balletMessageValidation).setElectionNominees(candidates);
     }
 
@@ -142,8 +109,11 @@ class ElectionTest {
 
     @Test
     void setUniverseRulerWhenThereIsOnlyOneCandidate() {
-        when(consoleIO.getInput()).thenReturn("Air");
-        Kingdom ruler = kingdomMap.get("air");
+        String candidateName = "air";
+        Set<String> candidates = new HashSet<>();
+        candidates.add(candidateName);
+        when(registry.getCandidateNames()).thenReturn(candidates);
+        Kingdom ruler = kingdomMap.get(candidateName);
 
         election.execute(universe, consoleIO);
 
@@ -153,60 +123,34 @@ class ElectionTest {
 
     @Test
     void clearRulerOfTheUniverse() {
-        when(consoleIO.getInput()).thenReturn("Air space");
+        setUpCandidateNames();
 
         election.execute(universe, consoleIO);
 
         verify(universe).setRuler(null);
     }
+
     @Test
-    void clearExistingAlliesForCandidatesIfAny() {
-        when(consoleIO.getInput()).thenReturn("Air water");
-        Kingdom airKingdom = kingdomMap.get("air");
-        Kingdom waterKingdom = kingdomMap.get("water");
-        airKingdom.joinAllies(mock(Kingdom.class));
+    void coordinatorShouldConductTheElectionForCurrentCandidates() {
+        setUpCandidateNames();
 
         election.execute(universe, consoleIO);
 
-        assertTrue(airKingdom.getAllies().isEmpty());
-        assertTrue(waterKingdom.getAllies().isEmpty());
+        verify(electionCoordinator).conductElection(election.getCandidates());
     }
 
     @Test
-    void constructMessagesForAllCandidates() {
-        when(consoleIO.getInput()).thenReturn("Air ice");
-        Kingdom airKingdom = kingdomMap.get("air");
-        Kingdom iceKingdom = kingdomMap.get("ice");
+    void setCandidatesToCountingStation() {
+        setUpCandidateNames();
 
         election.execute(universe, consoleIO);
 
-        verify(balletMessageConstructor).constructMessages(airKingdom);
-        verify(balletMessageConstructor).constructMessages(iceKingdom);
-    }
-
-    @Test
-    void electionCoordinatorShouldPickRandomMessages() {
-        when(consoleIO.getInput()).thenReturn("ice fire");
-
-        election.execute(universe, consoleIO);
-
-        verify(electionCoordinator).pickRandomMessages(anyList(), eq(6));
-    }
-
-    @Test
-    void electionCoordinatorShouldDistributeRandomMessages() {
-        when(consoleIO.getInput()).thenReturn("ice water");
-        ArrayList randomMessages = new ArrayList();
-        when(electionCoordinator.pickRandomMessages(anyList(), eq(6))).thenReturn(randomMessages);
-
-        election.execute(universe, consoleIO);
-
-        verify(electionCoordinator).distributeToReceivers(randomMessages);
+        verify(countingStation).setCandidates(election.getCandidates());
     }
 
     @Test
     void countingStationShouldDisplayResults() {
-        when(consoleIO.getInput()).thenReturn("ice water");
+        setUpCandidateNames();
 
         election.execute(universe, consoleIO);
 
@@ -215,7 +159,7 @@ class ElectionTest {
 
     @Test
     void roundShouldBeIncrementedForEveryElectionRound() {
-        when(consoleIO.getInput()).thenReturn("water land");
+        setUpCandidateNames();
         when(countingStation.isNextRoundNeeded()).thenReturn(true).thenReturn(false);
 
         election.execute(universe, consoleIO);
@@ -226,21 +170,22 @@ class ElectionTest {
 
     @Test
     void startElectionWithQualifiedCandidatesInCaseOfTie() {
-        when(consoleIO.getInput()).thenReturn("water land");
+        setUpCandidateNames();
         when(countingStation.isNextRoundNeeded()).thenReturn(true).thenReturn(false);
         Kingdom qualifier1 = mock(Kingdom.class);
         Kingdom qualifier2 = mock(Kingdom.class);
-        when(countingStation.getQualifiedCandidates()).thenReturn(Arrays.asList(qualifier1, qualifier2));
+        List<Kingdom> qualifiers = Arrays.asList(qualifier1, qualifier2);
+        when(countingStation.getQualifiedCandidates()).thenReturn(qualifiers);
 
         election.execute(universe, consoleIO);
 
-        verify(balletMessageConstructor).constructMessages(qualifier1);
-        verify(balletMessageConstructor).constructMessages(qualifier2);
+        verify(electionCoordinator).conductElection(qualifiers);
+        verify(countingStation).setCandidates(qualifiers);
     }
 
     @Test
     void setRulerOfTheUniverseIfNoFurtherRoundsAreNeeded() {
-        when(consoleIO.getInput()).thenReturn("water land");
+        setUpCandidateNames();
         when(countingStation.isNextRoundNeeded()).thenReturn(false);
         Kingdom ruler = mock(Kingdom.class);
         when(countingStation.getQualifiedCandidates()).thenReturn(Collections.singletonList(ruler));
@@ -252,10 +197,16 @@ class ElectionTest {
 
     @Test
     void displayNoVotersMessageWhenThereAreSixCandidates() {
-        when(consoleIO.getInput()).thenReturn("water land ice fire space air");
+        Set<String> candidates = new HashSet<>(Arrays.asList("air", "ice", "fire", "land", "water", "space"));
+        when(registry.getCandidateNames()).thenReturn(candidates);
 
         election.execute(universe, consoleIO);
 
         verify(consoleIO).display(NO_VOTERS);
+    }
+
+    private void setUpCandidateNames() {
+        Set<String> candidateNames = new LinkedHashSet<>(Arrays.asList("air", "ice"));
+        when(registry.getCandidateNames()).thenReturn(candidateNames);
     }
 }

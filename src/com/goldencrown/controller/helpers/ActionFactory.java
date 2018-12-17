@@ -1,8 +1,10 @@
 package com.goldencrown.controller.helpers;
 
+import com.goldencrown.controller.BalletBox;
 import com.goldencrown.controller.BalletMessageConstructor;
 import com.goldencrown.controller.BalletMessageValidation;
 import com.goldencrown.controller.BasicMessageValidation;
+import com.goldencrown.controller.CandidateRegistry;
 import com.goldencrown.controller.CountingStation;
 import com.goldencrown.controller.ElectionCoordinator;
 import com.goldencrown.controller.InputMessageConstructor;
@@ -34,15 +36,17 @@ public class ActionFactory {
     private static final Mastery MASTERY_ACTION = new Mastery(RULE_SEEKER,
             MASTERY_MESSAGE_VALIDATION, INPUT_MESSAGE_CONSTRUCTOR);
 
+    private static final int MESSAGES_TO_BE_PICKED = 6;
     private static final ElectionCoordinator COORDINATOR = new ElectionCoordinator();
     private static final Random RANDOM = new Random();
     private static final MessageContentGenerator CONTENT_GENERATOR = new MessageContentGenerator(RANDOM);
     private static final BalletMessageConstructor MESSAGE_CONSTRUCTOR = new BalletMessageConstructor(CONTENT_GENERATOR);
     private static final BalletMessageValidation MESSAGE_VALIDATION = new BalletMessageValidation();
     private static final CountingStation COUNTING_STATION = new CountingStation();
+    private static final CandidateRegistry REGISTRY = new CandidateRegistry();
+    private static final BalletBox BALLET_BOX = new BalletBox(MESSAGE_CONSTRUCTOR);
     private static final Election ELECTION_ACTION = new Election(COORDINATOR,
-            MESSAGE_CONSTRUCTOR,
-            MESSAGE_VALIDATION, COUNTING_STATION);
+            REGISTRY, MESSAGE_VALIDATION, COUNTING_STATION);
 
     private static final KnowRuler KNOW_RULER_ACTION = new KnowRuler();
     private static final Quit QUIT_ACTION = new Quit();
@@ -61,6 +65,8 @@ public class ActionFactory {
     static {
         actionMap.put(KNOW_RULER, KNOW_RULER_ACTION);
         actionMap.put(MASTERY, MASTERY_ACTION);
+        COORDINATOR.setBalletBox(BALLET_BOX);
+        COORDINATOR.setNumberOfMessagesToBePicked(MESSAGES_TO_BE_PICKED);
         actionMap.put(ELECTION, ELECTION_ACTION);
         actionMap.put(QUIT, QUIT_ACTION);
     }
