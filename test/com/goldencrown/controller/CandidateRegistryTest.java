@@ -25,20 +25,20 @@ class CandidateRegistryTest {
     @BeforeEach
     void setUp() {
         consoleIO = mock(IO.class);
-        candidateRegistry = new CandidateRegistry(consoleIO);
+        candidateRegistry = new CandidateRegistry();
         when(consoleIO.getInput()).thenReturn("ice");
     }
 
     @Test
     void displayInputMessageOnIO() {
-        candidateRegistry.registerCandidates();
+        candidateRegistry.registerCandidates(consoleIO);
 
         verify(consoleIO).display(INPUT_MESSAGE);
     }
 
     @Test
     void getCandidateNamesFromInput() {
-        candidateRegistry.registerCandidates();
+        candidateRegistry.registerCandidates(consoleIO);
 
         verify(consoleIO).getInput();
     }
@@ -47,7 +47,7 @@ class CandidateRegistryTest {
     void trimNamesFromInputAndConvertToLowerCase() {
         when(consoleIO.getInput()).thenReturn("Air  ice FiRe ");
 
-        candidateRegistry.registerCandidates();
+        candidateRegistry.registerCandidates(consoleIO);
 
         Set<String> candidateNames = candidateRegistry.getCandidateNames();
         assertNotNull(candidateNames);
@@ -59,7 +59,7 @@ class CandidateRegistryTest {
     void candidateShouldNotBeRegisteredMultipleTimes() {
         when(consoleIO.getInput()).thenReturn("Air  air AIR ");
 
-        candidateRegistry.registerCandidates();
+        candidateRegistry.registerCandidates(consoleIO);
 
         Set<String> candidateNames = candidateRegistry.getCandidateNames();
         assertNotNull(candidateNames);
@@ -71,7 +71,7 @@ class CandidateRegistryTest {
     void displayInvalidCandidateMessageGivenInvalidInput() {
         when(consoleIO.getInput()).thenReturn("invalid candidate names").thenReturn("fire");
 
-        candidateRegistry.registerCandidates();
+        candidateRegistry.registerCandidates(consoleIO);
 
         verify(consoleIO).display(INVALID_CANDIDATE_MESSAGES);
     }
@@ -82,7 +82,7 @@ class CandidateRegistryTest {
         when(consoleIO.getInput()).thenReturn("invalid input").thenReturn("invalid again")
                 .thenReturn("ice air").thenReturn("invalid input");
 
-        candidateRegistry.registerCandidates();
+        candidateRegistry.registerCandidates(consoleIO);
 
         verify(consoleIO, times(3)).display(INPUT_MESSAGE);
         verify(consoleIO, times(3)).getInput();

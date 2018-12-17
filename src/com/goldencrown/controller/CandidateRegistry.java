@@ -12,20 +12,15 @@ public class CandidateRegistry {
     private static final String INPUT_MESSAGE = "Enter the kingdoms competing to be the ruler (names separated space):";
     private static final String INVALID_CANDIDATE_MESSAGES = "Please enter valid candidate names";
 
-    private IO io;
     private Set<String> candidateNames;
 
-    public CandidateRegistry(IO io) {
-        this.io = io;
-    }
-
-    public void registerCandidates(){
+    public void registerCandidates(IO io) {
         io.display(INPUT_MESSAGE);
         Set<String> candidateNames = getCandidateNamesFromInput(io);
 
         if (isValidInput(candidateNames)) {
             io.display(INVALID_CANDIDATE_MESSAGES);
-            registerCandidates();
+            registerCandidates(io);
         }
         this.candidateNames = candidateNames;
     }
