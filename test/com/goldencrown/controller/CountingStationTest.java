@@ -18,7 +18,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -46,12 +48,10 @@ class CountingStationTest {
 
     @Test
     void doNothingIfCandidatesListIsEmpty() {
-        try {
-            countingStation.setCandidates(new ArrayList<>());
-            countingStation.displayResults(1, consoleIO);
-        } catch (NullPointerException e) {
-            fail("exception thrown");
-        }
+        countingStation.setCandidates(new ArrayList<>());
+        countingStation.displayResults(1, consoleIO);
+
+        verify(consoleIO, times(0)).display(anyString());
     }
 
     @Test
