@@ -14,7 +14,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.4.0</version>
                 <configuration>
-                    <mainClass>com.goldencrown.Main</mainClass>
+                    <mainClass>com.tameofthrones.Main</mainClass>
                 </configuration>
             </plugin>
             <plugin>
