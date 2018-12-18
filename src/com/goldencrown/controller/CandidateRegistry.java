@@ -40,7 +40,4 @@ public class CandidateRegistry {
         return candidateNames;
     }
 
-    public void setCandidateNames(Set<String> candidateNames) {
-        this.candidateNames = candidateNames;
-    }
 }
