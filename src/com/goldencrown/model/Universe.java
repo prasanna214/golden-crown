@@ -2,6 +2,7 @@ package com.goldencrown.model;
 
 import java.util.List;
 
+//Represents a group of kingdoms under a single ruler
 public class Universe {
     private Kingdom ruler;
     private List<Kingdom> kingdoms;

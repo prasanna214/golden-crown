@@ -1,5 +1,6 @@
 package com.goldencrown.model;
 
+//Represents an entity of communication between kingdoms
 public class Message {
     private Kingdom sender, receiver;
     private String content;
